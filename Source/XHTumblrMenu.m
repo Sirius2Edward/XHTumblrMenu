@@ -38,7 +38,9 @@
 }
 
 - (void)_setupPanGesture {
-    // pan gesture 
+    // pan gesture
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizerHandler:)];
+    [self addGestureRecognizer:panGestureRecognizer];
 }
 
 - (void)_setup {
@@ -208,16 +210,6 @@
     
 }
 
-- (void)dismiss:(id)sender {
-    [self dropAnimation];
-    double delayInSeconds = XHTumblrMenuViewAnimationTime  + XHTumblrMenuViewAnimationInterval * (_items.count + 1);
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self _dissDealloc];
-        [self _dissMissAnimation];
-    });
-}
-
 - (void)_dissMissAnimation {
     switch (self.dissmissAnimationType) {
         case kXHFade: {
@@ -252,6 +244,37 @@
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         tumblrMenuItemButton.tumblrMenuItem.tumblrMenuViewSelectedBlock(weakSelf, tumblrMenuItemButton.tumblrMenuItem);
+    });
+}
+
+#pragma mark - GestureRecgnizer handler
+
+// pan
+- (void)panGestureRecognizerHandler:(UIPanGestureRecognizer *)panGestureRecognizer {
+    UIGestureRecognizerState state = panGestureRecognizer.state;
+    switch (state) {
+        case UIGestureRecognizerStateBegan:
+            
+            break;
+        case UIGestureRecognizerStateChanged:
+            break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateEnded:
+            break;
+        default:
+            break;
+    }
+}
+
+// tap
+- (void)dismiss:(id)sender {
+    [self dropAnimation];
+    double delayInSeconds = XHTumblrMenuViewAnimationTime  + XHTumblrMenuViewAnimationInterval * (_items.count + 1);
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self _dissDealloc];
+        [self _dissMissAnimation];
     });
 }
 
