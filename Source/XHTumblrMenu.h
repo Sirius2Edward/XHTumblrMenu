@@ -11,6 +11,9 @@
 #import "XHTumblrMenuHeader.h"
 
 @interface XHTumblrMenu : UIView <UIGestureRecognizerDelegate>
+// Gesture enable
+@property (nonatomic, assign) BOOL enablePangesture;
+
 // background
 @property (nonatomic, strong) UIImageView *backgroundImgView;
 
