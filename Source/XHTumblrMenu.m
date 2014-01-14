@@ -17,6 +17,15 @@
 
 @implementation XHTumblrMenu
 
+#pragma mark - Propertys
+
+- (void)setEnablePangesture:(BOOL)enablePangesture {
+    _enablePangesture = enablePangesture;
+    if (_enablePangesture) {
+        [self _setupPanGesture];
+    }
+}
+
 #pragma mark - life cycle
 
 - (id)initWithFrame:(CGRect)frame {
@@ -26,6 +35,10 @@
         [self _setup];
     }
     return self;
+}
+
+- (void)_setupPanGesture {
+    // pan gesture 
 }
 
 - (void)_setup {
