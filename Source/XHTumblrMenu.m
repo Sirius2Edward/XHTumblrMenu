@@ -47,6 +47,7 @@
     self.dissmissAnimationType = kXHFade;
     self.dissMissDuration = 0.1;
     self.tumblrMenuViewShowItemAnimationTime = XHTumblrMenuViewAnimationTime;
+    self.panThreshold = 30;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
     tap.delegate = self;
@@ -252,19 +253,32 @@
 // pan
 - (void)panGestureRecognizerHandler:(UIPanGestureRecognizer *)panGestureRecognizer {
     UIGestureRecognizerState state = panGestureRecognizer.state;
+    CGPoint gestureTranslation = [panGestureRecognizer translationInView:panGestureRecognizer.view];
+    
     switch (state) {
         case UIGestureRecognizerStateBegan:
-            
             break;
-        case UIGestureRecognizerStateChanged:
+        case UIGestureRecognizerStateChanged: {
+            CGPoint center = self.center;
+            center.x += gestureTranslation.x;
+            center.y += gestureTranslation.y;
+            self.center = center;
             break;
+        }
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed:
-        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateEnded: {
+            CGRect tumblrMenuFrame = self.frame;
+            if (CGRectGetMinX(tumblrMenuFrame) > self.panThreshold && CGRectGetMinY(tumblrMenuFrame) > self.panThreshold) {
+                [self _dissMissAnimation];
+                [self _dissDealloc];
+            }
             break;
+        }
         default:
             break;
     }
+    [panGestureRecognizer setTranslation:CGPointZero inView:panGestureRecognizer.view];
 }
 
 // tap

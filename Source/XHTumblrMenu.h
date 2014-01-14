@@ -12,7 +12,8 @@
 
 @interface XHTumblrMenu : UIView <UIGestureRecognizerDelegate>
 // Gesture enable
-@property (nonatomic, assign) BOOL enablePangesture;
+@property (nonatomic, assign) BOOL enablePangesture; // default is NO
+@property (nonatomic, assign) CGFloat panThreshold; // default is 30
 
 // background
 @property (nonatomic, strong) UIImageView *backgroundImgView;
